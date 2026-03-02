@@ -19,6 +19,12 @@ export default function YouTubeImport() {
 
   const [genMetaLoading, setGenMetaLoading] = useState(false);
 
+  function handleGenerateShorts() {
+    // TODO: подключить реальный pipeline (скачивание YouTube-видео + generateCreatives).
+    // Сейчас YouTube-импорт выдаёт только метаданные — явно подсветим это пользователю.
+    window.alert('Генерация Shorts из YouTube-видео пока в разработке. Сейчас доступны импорт и новые метаданные, сам ролик нужно загрузить во вкладке \"Новый креатив\" или \"Классический\".');
+  }
+
   async function handleImport() {
     if (!url.trim()) return;
     setLoading(true);
@@ -198,6 +204,7 @@ export default function YouTubeImport() {
               background: 'linear-gradient(135deg, #ff2020, #a855f7)',
               color: '#fff', boxShadow: '0 0 30px #ff000044',
             }}
+            onClick={handleGenerateShorts}
           >
             🚀 Уникализировать и скачать Shorts
           </button>
