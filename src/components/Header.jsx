@@ -19,7 +19,7 @@ export default function Header() {
     ? Math.round((user.videosProcessedThisMonth / limits.videosPerMonth) * 100)
     : 0;
 
-  const APP_VERSION = 'v1.1';
+  const APP_VERSION = 'v1.2';
 
   return (
     <header style={{
