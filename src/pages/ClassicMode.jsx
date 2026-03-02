@@ -4,7 +4,7 @@
 
 import { useState } from 'react';
 import { Card, SectionTitle, Toggle, Select, DropZone, ProgressBar } from '../components/ui.jsx';
-import { generateCreatives, exportSRT } from '../api.js';
+import { generateCreatives, exportSRT, BACKEND_BASE_URL } from '../api.js';
 
 const LANGUAGES = ['auto', 'ru', 'en', 'es', 'fr', 'de', 'pt', 'it', 'zh', 'ar', 'tr', 'uk'];
 
@@ -199,7 +199,7 @@ export default function ClassicMode() {
                 📄 SRT
               </button>
               <a
-                href={r.downloadUrl || '#'}
+                href={r.downloadUrl ? `${BACKEND_BASE_URL || ''}${r.downloadUrl}` : '#'}
                 className="btn"
                 style={{ padding: '8px 16px', fontSize: 12, background: 'linear-gradient(90deg, #00f5d4, #0ea5e9)', color: '#000', fontWeight: 700, textDecoration: 'none' }}
               >

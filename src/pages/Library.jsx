@@ -4,7 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import { Card, BanScoreBadge, Badge, Spinner } from '../components/ui.jsx';
-import { getCreatives, getOffers } from '../api.js';
+import { getCreatives, getOffers, BACKEND_BASE_URL } from '../api.js';
 
 export default function Library() {
   const [creatives, setCreatives] = useState([]);
@@ -89,7 +89,7 @@ export default function Library() {
                   borderRadius: 8, color: '#666', fontSize: 11, cursor: 'pointer',
                 }}>♻️ Перегенерировать</button>
                 <a
-                  href={c.downloadUrl || '#'}
+                  href={c.downloadUrl ? `${BACKEND_BASE_URL || ''}${c.downloadUrl}` : '#'}
                   style={{
                     padding: '7px 14px',
                     background: 'linear-gradient(90deg, #00f5d4, #0ea5e9)',

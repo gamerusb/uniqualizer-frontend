@@ -7,7 +7,7 @@ import {
   Card, SectionTitle, Toggle, Select, Input, DropZone,
   ProgressBar, ChipGroup, Slider, Modal, BanScoreBadge, Badge, Spinner,
 } from '../components/ui.jsx';
-import { generateCreatives, getOffers, createOffer } from '../api.js';
+import { generateCreatives, getOffers, createOffer, BACKEND_BASE_URL } from '../api.js';
 
 const PLATFORMS = [
   { value: 'tiktok', label: 'TikTok', icon: '🎵' },
@@ -360,7 +360,7 @@ export default function NewCreative() {
                 <div style={{ fontSize: 11, color: '#888', marginBottom: 8 }}>{c.platform}</div>
                 {c.banScore && <div style={{ marginBottom: 8 }}><BanScoreBadge score={c.banScore} /></div>}
                 <a
-                  href={c.downloadUrl || '#'}
+                  href={c.downloadUrl ? `${BACKEND_BASE_URL || ''}${c.downloadUrl}` : '#'}
                   style={{
                     display: 'block', textAlign: 'center', padding: '7px 0',
                     background: 'linear-gradient(90deg, #00f5d4, #0ea5e9)',

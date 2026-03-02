@@ -4,6 +4,11 @@ import axios from 'axios';
 
 const USER_ID = 'user_demo'; // В реальном проде — из сессии/JWT
 
+// Базовый origin бэкенда для прямых скачиваний файлов (results/)
+export const BACKEND_BASE_URL =
+  (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_BACKEND_URL)
+    || '';
+
 const api = axios.create({
   baseURL: '/api',
   headers: { 'x-user-id': USER_ID },
