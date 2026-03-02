@@ -19,6 +19,8 @@ export default function Header() {
     ? Math.round((user.videosProcessedThisMonth / limits.videosPerMonth) * 100)
     : 0;
 
+  const APP_VERSION = 'v1.1';
+
   return (
     <header style={{
       background: 'linear-gradient(90deg, #080815, #0f0f22)',
@@ -45,8 +47,21 @@ export default function Header() {
           <div style={{ fontWeight: 800, fontSize: 17, letterSpacing: -0.5 }}>
             Uniqualizer <span style={{ color: '#a855f7' }}>Pro</span>
           </div>
-          <div style={{ fontSize: 9, color: '#333', letterSpacing: 1.5, textTransform: 'uppercase', marginTop: 1 }}>
-            Creative Engine for Arbitrage
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 1 }}>
+            <div style={{ fontSize: 9, color: '#333', letterSpacing: 1.5, textTransform: 'uppercase' }}>
+              Creative Engine for Arbitrage
+            </div>
+            <span style={{
+              fontSize: 9,
+              color: '#555',
+              padding: '2px 6px',
+              borderRadius: 999,
+              border: '1px solid #2a2a4a',
+              background: '#050515',
+              fontFamily: 'monospace',
+            }}>
+              {APP_VERSION}
+            </span>
           </div>
         </div>
       </div>
