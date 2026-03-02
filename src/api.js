@@ -86,6 +86,11 @@ export async function importYoutube({ url, mode, start, end }) {
   return data;
 }
 
+export async function importYoutubeShorts({ url, mode, start, end }) {
+  const { data } = await api.post('/import-youtube/shorts', { url, mode, start, end });
+  return data;
+}
+
 // ── OFFERS ────────────────────────────────────────────────────────────────────
 
 export async function getOffers() {

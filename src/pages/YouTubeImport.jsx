@@ -4,7 +4,7 @@
 
 import { useState } from 'react';
 import { Card, SectionTitle, Toggle, Input, Badge, Spinner } from '../components/ui.jsx';
-import { importYoutube } from '../api.js';
+import { importYoutube, importYoutubeShorts } from '../api.js';
 
 export default function YouTubeImport() {
   const [url, setUrl] = useState('');
@@ -18,12 +18,6 @@ export default function YouTubeImport() {
   const [makeShorts, setMakeShorts] = useState(true);
 
   const [genMetaLoading, setGenMetaLoading] = useState(false);
-
-  function handleGenerateShorts() {
-    // TODO: подключить реальный pipeline (скачивание YouTube-видео + generateCreatives).
-    // Сейчас YouTube-импорт выдаёт только метаданные — явно подсветим это пользователю.
-    window.alert('Генерация Shorts из YouTube-видео пока в разработке. Сейчас доступны импорт и новые метаданные, сам ролик нужно загрузить во вкладке \"Новый креатив\" или \"Классический\".');
-  }
 
   async function handleImport() {
     if (!url.trim()) return;
@@ -50,6 +44,36 @@ export default function YouTubeImport() {
       }
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleGenerateShorts() {
+    if (!result || !url.trim()) return;
+    setGenMetaLoading(true);
+    setError('');
+    try {
+      const data = await importYoutubeShorts({
+        url: url.trim(),
+        mode,
+        start: mode === 'clip' ? Number(start) : 0,
+        end: mode === 'clip' ? Number(end) : undefined,
+      });
+      if (data.downloadUrl) {
+        window.location.href = data.downloadUrl;
+      } else {
+        setError('Сервер не вернул ссылку на скачивание Shorts.');
+      }
+    } catch (err) {
+      const apiError = err.response?.data?.error ?? err.message ?? 'Ошибка импорта';
+      if (typeof apiError === 'string') {
+        setError(apiError);
+      } else if (apiError && typeof apiError === 'object') {
+        setError(apiError.message || JSON.stringify(apiError));
+      } else {
+        setError('Неизвестная ошибка импорта');
+      }
+    } finally {
+      setGenMetaLoading(false);
     }
   }
 
@@ -205,8 +229,9 @@ export default function YouTubeImport() {
               color: '#fff', boxShadow: '0 0 30px #ff000044',
             }}
             onClick={handleGenerateShorts}
+            disabled={genMetaLoading}
           >
-            🚀 Уникализировать и скачать Shorts
+            {genMetaLoading ? <><Spinner size={16} color="#fff" /> &nbsp; Обработка...</> : '🚀 Уникализировать и скачать Shorts'}
           </button>
         </>
       )}
