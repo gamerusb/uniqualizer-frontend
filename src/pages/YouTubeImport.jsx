@@ -4,7 +4,7 @@
 
 import { useState } from 'react';
 import { Card, SectionTitle, Toggle, Input, Badge, Spinner } from '../components/ui.jsx';
-import { importYoutube, importYoutubeShorts } from '../api.js';
+import { importYoutube } from '../api.js';
 
 export default function YouTubeImport() {
   const [url, setUrl] = useState('');
@@ -17,7 +17,7 @@ export default function YouTubeImport() {
   const [end, setEnd] = useState('60');
   const [makeShorts, setMakeShorts] = useState(true);
 
-  const [genMetaLoading, setGenMetaLoading] = useState(false);
+  const [genMetaLoading] = useState(false);
 
   async function handleImport() {
     if (!url.trim()) return;
@@ -48,33 +48,18 @@ export default function YouTubeImport() {
   }
 
   async function handleGenerateShorts() {
-    if (!result || !url.trim()) return;
-    setGenMetaLoading(true);
-    setError('');
-    try {
-      const data = await importYoutubeShorts({
-        url: url.trim(),
-        mode,
-        start: mode === 'clip' ? Number(start) : 0,
-        end: mode === 'clip' ? Number(end) : undefined,
-      });
-      if (data.downloadUrl) {
-        window.location.href = data.downloadUrl;
-      } else {
-        setError('Сервер не вернул ссылку на скачивание Shorts.');
-      }
-    } catch (err) {
-      const apiError = err.response?.data?.error ?? err.message ?? 'Ошибка импорта';
-      if (typeof apiError === 'string') {
-        setError(apiError);
-      } else if (apiError && typeof apiError === 'object') {
-        setError(apiError.message || JSON.stringify(apiError));
-      } else {
-        setError('Неизвестная ошибка импорта');
-      }
-    } finally {
-      setGenMetaLoading(false);
+    if (!result) {
+      window.alert('Сначала импортируй ролик через кнопку \"Импортировать\", чтобы получить метаданные.');
+      return;
     }
+    window.alert(
+      'Сейчас YouTube-импорт в Uniqualizer Pro делает две вещи:\n\n' +
+      '1) Импортирует ролик и подтягивает превью.\n' +
+      '2) Генерирует новые заголовки, описание и теги через Groq AI.\n\n' +
+      'Чтобы уникализировать сам ролик и скачать Shorts:\n' +
+      '- скачай видео с YouTube отдельно (через свой загрузчик),\n' +
+      '- загрузи его во вкладке \"Новый креатив\" или \"Классический\" и запусти генерацию там.'
+    );
   }
 
   const generatedMeta = result?.meta?.generated;
@@ -229,9 +214,8 @@ export default function YouTubeImport() {
               color: '#fff', boxShadow: '0 0 30px #ff000044',
             }}
             onClick={handleGenerateShorts}
-            disabled={genMetaLoading}
           >
-            {genMetaLoading ? <><Spinner size={16} color="#fff" /> &nbsp; Обработка...</> : '🚀 Уникализировать и скачать Shorts'}
+            🚀 Уникализировать и скачать Shorts
           </button>
         </>
       )}
