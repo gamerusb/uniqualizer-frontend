@@ -192,7 +192,7 @@ export default function ClassicMode() {
                 📄 SRT
               </button>
               <a
-                href={r.downloadUrl || '#'}
+                href={`https://uniqualizer-backend-production.up.railway.app${r.downloadUrl}`}
                 className="btn"
                 style={{ padding: '8px 16px', fontSize: 12, background: 'linear-gradient(90deg, #00f5d4, #0ea5e9)', color: '#000', fontWeight: 700, textDecoration: 'none' }}
               >
