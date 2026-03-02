@@ -147,7 +147,14 @@ export default function NewCreative() {
       setCreatives(data.creatives || []);
     } catch (err) {
       stopProgress();
-      setError(err.response?.data?.error || err.message || 'Ошибка сервера');
+      const apiError = err.response?.data?.error ?? err.message ?? 'Ошибка сервера';
+      if (typeof apiError === 'string') {
+        setError(apiError);
+      } else if (apiError && typeof apiError === 'object') {
+        setError(apiError.message || JSON.stringify(apiError));
+      } else {
+        setError('Неизвестная ошибка сервера');
+      }
     } finally {
       setGenerating(false);
     }
@@ -353,7 +360,7 @@ export default function NewCreative() {
                 <div style={{ fontSize: 11, color: '#888', marginBottom: 8 }}>{c.platform}</div>
                 {c.banScore && <div style={{ marginBottom: 8 }}><BanScoreBadge score={c.banScore} /></div>}
                 <a
-                  href={`https://uniqualizer-backend-production.up.railway.app${c.downloadUrl}`}
+                  href={c.downloadUrl || '#'}
                   style={{
                     display: 'block', textAlign: 'center', padding: '7px 0',
                     background: 'linear-gradient(90deg, #00f5d4, #0ea5e9)',

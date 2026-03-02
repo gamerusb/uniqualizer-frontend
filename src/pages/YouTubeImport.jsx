@@ -34,7 +34,14 @@ export default function YouTubeImport() {
       });
       setResult(data);
     } catch (err) {
-      setError(err.response?.data?.error || err.message || 'Ошибка импорта');
+      const apiError = err.response?.data?.error ?? err.message ?? 'Ошибка импорта';
+      if (typeof apiError === 'string') {
+        setError(apiError);
+      } else if (apiError && typeof apiError === 'object') {
+        setError(apiError.message || JSON.stringify(apiError));
+      } else {
+        setError('Неизвестная ошибка импорта');
+      }
     } finally {
       setLoading(false);
     }

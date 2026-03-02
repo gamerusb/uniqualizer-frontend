@@ -73,7 +73,14 @@ export default function ClassicMode() {
 
       setResults(data.creatives || []);
     } catch (err) {
-      setError(err.response?.data?.error || err.message || 'Ошибка сервера');
+      const apiError = err.response?.data?.error ?? err.message ?? 'Ошибка сервера';
+      if (typeof apiError === 'string') {
+        setError(apiError);
+      } else if (apiError && typeof apiError === 'object') {
+        setError(apiError.message || JSON.stringify(apiError));
+      } else {
+        setError('Неизвестная ошибка сервера');
+      }
     } finally {
       setRunning(false);
     }
@@ -192,7 +199,7 @@ export default function ClassicMode() {
                 📄 SRT
               </button>
               <a
-                href={`https://uniqualizer-backend-production.up.railway.app${r.downloadUrl}`}
+                href={r.downloadUrl || '#'}
                 className="btn"
                 style={{ padding: '8px 16px', fontSize: 12, background: 'linear-gradient(90deg, #00f5d4, #0ea5e9)', color: '#000', fontWeight: 700, textDecoration: 'none' }}
               >
